@@ -1,0 +1,65 @@
+🔐 JWT Authentication with Node.js – Project Overview
+This project demonstrates how to implement JWT (JSON Web Token) based authentication in a Node.js environment, using two types of tokens to manage user sessions securely and efficiently.
+
+📂 File Structure & Responsibilities
+server.js
+This file handles application-level routes — specifically, routes related to user data.
+✅ Example: /posts – returns posts that belong only to the authenticated user.
+
+auth_server.js
+This file is dedicated solely to authentication-related routes and logic.
+✅ Routes include: /login, /token, /logout.
+
+🔑 Types of Tokens Used
+This system uses two kinds of JWTs:
+
+Access Token
+
+Short-lived (e.g., 25 seconds).
+
+Used to authenticate requests to protected routes like /posts.
+
+Refresh Token
+
+Long-lived.
+
+Used to request a new access token once the original access token expires.
+
+Stored temporarily on the server (in-memory in this demo).
+
+🔁 Token Lifecycle & Flow
+User Login (POST /login)
+The user sends a login request with their username. On successful login:
+
+An access token and a refresh token are issued.
+
+Both tokens are returned to the client.
+
+Accessing Protected Routes
+The client includes the access token in the Authorization header to access routes like /posts.
+
+Refreshing Tokens (POST /token)
+When the access token expires (after 25 seconds), the client sends the refresh token to the /token route.
+
+If valid, the server responds with a new access token.
+
+Logging Out (POST /logout)
+When the user logs out:
+
+The refresh token is removed from the server (i.e., invalidated).
+
+This prevents it from being used again to generate new access tokens.
+
+🛡 Security Considerations
+This is a demonstration, so refresh tokens are stored in an in-memory array.
+
+In a production system:
+
+Use a secure database or Redis to store and manage refresh tokens.
+
+Implement token rotation and blacklisting to improve security.
+
+Consider using HTTP-only secure cookies for storing tokens on the client.
+
+✅ Summary
+This setup demonstrates a stateless authentication flow using JWTs with access and refresh token strategies. It ensures secure access to protected data while allowing token renewal without requiring users to re-authenticate frequently.
